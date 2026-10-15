@@ -135,6 +135,7 @@ textarea.box{min-height:110px;font-size:12px;font-family:ui-monospace,monospace}
 .pf{position:relative}.pf span{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-weight:800;font-size:22px;color:var(--m)}.pf input{padding-left:38px}
 .step{display:flex;gap:10px;align-items:center}.step button{width:52px;min-height:52px;flex:none;border-radius:14px;background:var(--b);font-size:26px;font-weight:700;line-height:1}.step input{text-align:center;font-size:20px;font-weight:700}
 .crow{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--b)}.crow b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}.crow .step input{width:76px}.crow .step button{width:42px;min-height:42px;font-size:22px}
+.sr{position:relative;margin-bottom:12px}.sr svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--m);pointer-events:none}.sr input{padding-left:44px}
 </style></head>
 <body>
 <header id="top"><div class="brand"><div class="logo" id="logo"></div><h1>Zina Basicos</h1></div><div class="dates" id="dates"></div></header>
@@ -147,7 +148,7 @@ textarea.box{min-height:110px;font-size:12px;font-family:ui-monospace,monospace}
 <script>
 "use strict";
 /* ===== Iconos SVG integrados (sin dependencias) ===== */
-const P={home:'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',list:'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',chart:'M4 20V10m6 10V4m6 16v-7m5 7H2',cog:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.4-3a7.4 7.4 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14.5 3h-4l-.4 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7.4 7.4 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2l.4 2.6h4l.4-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z',store:'M4 9l1-5h14l1 5M4 9a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 6 0 2.5 2.5 0 0 0 5 0M5 12v8h14v-8M10 20v-5h4v5',up:'M3 17l6-6 4 4 8-8M15 7h6v6',down:'M3 7l6 6 4-4 8 8M15 17h6v-6',dots:'M12 5h.01M12 12h.01M12 19h.01',back:'M15 18l-6-6 6-6',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',trash:'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',cal:'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',box:'M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8',plus:'M12 5v14M5 12h14',count:'M9 4h6v3H9zM7 5H5v16h14V5h-2M9 14l2 2 4-4'};
+const P={home:'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',list:'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',chart:'M4 20V10m6 10V4m6 16v-7m5 7H2',cog:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.4-3a7.4 7.4 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14.5 3h-4l-.4 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7.4 7.4 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2l.4 2.6h4l.4-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z',store:'M4 9l1-5h14l1 5M4 9a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 6 0 2.5 2.5 0 0 0 5 0M5 12v8h14v-8M10 20v-5h4v5',up:'M3 17l6-6 4 4 8-8M15 7h6v6',down:'M3 7l6 6 4-4 8 8M15 17h6v-6',dots:'M12 5h.01M12 12h.01M12 19h.01',back:'M15 18l-6-6 6-6',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',trash:'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',cal:'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',box:'M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8',plus:'M12 5v14M5 12h14',count:'M9 4h6v3H9zM7 5H5v16h14V5h-2M9 14l2 2 4-4',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.3-4.3'};
 const ic=n=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${P[n]}"/></svg>`;
 
 /* ===== Datos: localStorage (solo versión de prueba; importes en centavos enteros) =====
@@ -184,7 +185,7 @@ const PER=[['day','Hoy'],['week','Esta semana'],['month','Este mes'],['year','Es
 const CLI=['Minorista','Mayorista','Cliente habitual','Otro'],CAT=['Mercadería','Transporte','Alquiler','Servicios','Sueldos','Otro'];
 
 /* ===== Estado de UI ===== */
-const U={tab:'home',ht:'in',hp:'day',mt:'all',mp:'month',sp:'month',sd:'',md:''};
+const U={tab:'home',ht:'in',hp:'day',mt:'all',mp:'month',sp:'month',sd:'',md:'',q:''};
 let busy=false,pendingDel=null;
 function toast(t,bad){const e=$('#toast');e.textContent=t;e.className=bad?'bad':'';e.hidden=false;clearTimeout(toast.k);toast.k=setTimeout(()=>e.hidden=true,2600)}
 
@@ -224,10 +225,19 @@ function vHome(){const per=S.movs.filter(m=>inPer(m.date,U.hp)),list=sorted(S.mo
   ${list.length>5?`<button class="link" data-a="tab" data-v="mov">Ver todos los movimientos</button>`:''}
   `}
 
-function vMov(){let l=sorted(S.movs.filter(m=>(U.md?m.date===U.md:inPer(m.date,U.mp))&&(U.mt==='all'||m.type===U.mt)));
-  return `<header class="hd"><div><h1>Movimientos</h1><p>${l.length} en el período</p></div></header>
-  ${tabs([['all','Todos'],['in','Ingresos'],['out','Egresos']],U.mt,'mtab')}${U.md?`<div class="chips"><span class="chip on">${U.md.split('-').reverse().join('/')}</span><button class="chip" data-a="mdclear">Quitar fecha</button></div>`:''}${chips(U.md?'':U.mp,'mper')}
-  <div class="card">${l.length?l.map(row).join(''):emptyList('No hay movimientos con estos filtros.')}</div>`}
+/* Buscador: con texto escrito busca en todos los movimientos, sin importar el período */
+const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const hasQ=()=>U.q.trim()!=='';
+function movFiltered(){const q=norm(U.q).split(/\s+/).filter(Boolean);
+  const hay=m=>{const h=norm([m.desc,m.client,m.place,m.party,m.notes,m.cat,m.clientCat,m.amount/100,dlabel(m),m.date.split('-').reverse().join('/')].concat((m.items||[]).map(x=>x.name),m.xt||[]).join(' '));return q.every(t=>h.includes(t))};
+  return sorted(S.movs.filter(m=>(U.mt==='all'||m.type===U.mt)&&(q.length?hay(m):(U.md?m.date===U.md:inPer(m.date,U.mp)))))}
+const movList=l=>l.length?l.map(row).join(''):emptyList(hasQ()?'No encontramos movimientos con esa búsqueda.':'No hay movimientos con estos filtros.');
+function movTop(){return (U.md&&!hasQ()?`<div class="chips"><span class="chip on">${U.md.split('-').reverse().join('/')}</span><button class="chip" data-a="mdclear">Quitar fecha</button></div>`:'')+(hasQ()?'<p style="color:var(--m);font-size:13px;margin:10px 0">Buscando en todos los movimientos</p>':chips(U.md?'':U.mp,'mper'))}
+function vMov(){let l=movFiltered();
+  return `<header class="hd"><div><h1>Movimientos</h1><p id="mc">${l.length} ${hasQ()?(l.length===1?'resultado':'resultados'):'en el período'}</p></div></header>
+  <div class="sr">${ic('search')}<input id="q" type="search" autocomplete="off" placeholder="Buscar cliente, producto o lugar" value="${esc(U.q)}" aria-label="Buscar movimientos"></div>
+  ${tabs([['all','Todos'],['in','Ingresos'],['out','Egresos']],U.mt,'mtab')}<div id="mt">${movTop()}</div>
+  <div class="card" id="ml">${movList(l)}</div>`}
 
 function vStats(){const l=S.movs.filter(m=>U.sd?m.date===U.sd:inPer(m.date,U.sp)),i=sum(l,'in'),o=sum(l,'out');
   let body;
@@ -370,9 +380,9 @@ function confirmReset(){sheet(`<h3>Borrar todos los datos</h3><p>Se eliminarán 
 
 /* ===== Eventos ===== */
 document.addEventListener('click',e=>{if(e.target.id==='layer'){closeForm();return}const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v,id=b.dataset.id;
-  if(a==='tab'){if(v==='home'&&history.state&&history.state.t){history.back();return}pushT();U.tab=v;U.md='';render();scrollTo(0,0)}
+  if(a==='tab'){if(v==='home'&&history.state&&history.state.t){history.back();return}pushT();U.tab=v;U.md='';U.q='';render();scrollTo(0,0)}
   else if(a==='htab'){U.ht=v;render()}else if(a==='mtab'){U.mt=v;render()}
-  else if(a==='hper'){U.hp=v;render()}else if(a==='mper'){U.mp=v;U.md='';render()}else if(a==='mdclear'){U.md='';render()}else if(a==='day'){pushT();U.md=v;U.tab='mov';render();scrollTo(0,0)}else if(a==='sper'){U.sp=v;U.sd='';render()}else if(a==='sdclear'){U.sd='';render()}
+  else if(a==='hper'){U.hp=v;render()}else if(a==='mper'){U.mp=v;U.md='';U.q='';render()}else if(a==='mdclear'){U.md='';render()}else if(a==='day'){pushT();U.q='';U.md=v;U.tab='mov';render();scrollTo(0,0)}else if(a==='sper'){U.sp=v;U.sd='';render()}else if(a==='sdclear'){U.sd='';render()}
   else if(a==='new')openForm(v);
   else if(a==='tog'){S.settings[v]=!S.settings[v];if(v==='inv'&&!S.settings.inv&&U.tab==='inv')U.tab='set';save();render()}
   else if(a==='itemnew')openItem();else if(a==='count')openCount();else if(a==='addline')addLine();else if(a==='addp')addX();else if(a==='pick'){if(!S.inv.length){toast('Primero creá productos en Inventario',1)}else sheet(`<h3>Elegí los productos</h3><div style="max-height:50vh;overflow:auto">${[...S.inv].sort((x,y)=>x.name.localeCompare(y.name)).map(i=>`<label class="pk"><input type="checkbox" value="${i.id}"${i.stock<=0?' disabled':''}><span><b>${esc(i.name)}</b><small>${fmt(i.price)} · stock ${i.stock}</small></span></label>`).join('')}</div><div class="acts"><button class="btn ghost" data-a="close">Cancelar</button><button class="btn" data-a="pickok">Agregar</button></div>`)}
@@ -417,8 +427,10 @@ document.addEventListener('input',e=>{const el=e.target;if(el.id!=='fa'&&!el.cla
 function fillItem(){const s=$('#fi');if(!s)return;const it=S.inv.find(x=>x.id===s.value);if(!it)return;const q=Math.max(1,Math.floor(Number($('#fq').value))||1);$('#fd').value=it.name;$('#fa').value=(it.price*q/100).toLocaleString('en-US',{maximumFractionDigits:2})}
 document.addEventListener('change',e=>{if(e.target.closest('.il'))sumLines()});
 document.addEventListener('input',e=>{if(e.target.closest('.il'))sumLines()});
+/* Buscador de Movimientos: actualiza solo la lista (el teclado no se cierra) */
+document.addEventListener('input',e=>{if(e.target.id!=='q')return;U.q=e.target.value;const l=movFiltered();$('#ml').innerHTML=movList(l);$('#mt').innerHTML=movTop();$('#mc').textContent=l.length+' '+(hasQ()?(l.length===1?'resultado':'resultados'):'en el período')});
 document.addEventListener('contextmenu',e=>{if(!e.target.closest('input,textarea'))e.preventDefault()});
-document.addEventListener('change',e=>{if(e.target.id==='sd'){U.sd=e.target.value;render()}else if(e.target.id==='cd'&&e.target.value){pushT();U.md=e.target.value;U.tab='mov';render();scrollTo(0,0)}});
+document.addEventListener('change',e=>{if(e.target.id==='sd'){U.sd=e.target.value;render()}else if(e.target.id==='cd'&&e.target.value){pushT();U.q='';U.md=e.target.value;U.tab='mov';render();scrollTo(0,0)}});
 render();
 /* Instalación como app (PWA): registra el service worker si el navegador lo permite */
 try{if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}catch(e){}
