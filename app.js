@@ -236,7 +236,7 @@ function parseBackup(t){const d=JSON.parse(t);if(!d||!Array.isArray(d.movs)||!d.
 function confirmImport(d){pendingImp=d;sheet(`<h3>¿Reemplazar todos tus datos?</h3><p>Vas a cargar ${d.movs.length} movimientos y ${d.inv.length} productos. Lo que tenés ahora se va a reemplazar, pero antes se guarda una copia por si te arrepentís.</p><div class="acts"><button class="btn ghost" data-a="close">Cancelar</button><button class="btn dng" data-a="importok">Sí, reemplazar</button></div>`,1)}
 const hasPrev=()=>{try{return !!localStorage.getItem(KEY+'-antes')}catch(e){return false}};
 
-/* ===== Eventos =====
+/* ===== Eventos ===== */
 document.addEventListener('click',e=>{if(e.target.id==='layer'){tryClose();return}const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v,id=b.dataset.id;
   if(a==='tab'){if(v==='home'&&history.state&&history.state.t){history.back();return}pushT();U.tab=v;U.md='';U.q='';U.lim=30;anim=true;render();scrollTo(0,0)}
   else if(a==='htab'){U.ht=v;render()}else if(a==='mtab'){U.mt=v;U.lim=30;render()}
