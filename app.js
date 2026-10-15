@@ -194,7 +194,7 @@ function sumLines(){let t=0;const n=[];document.querySelectorAll('#il .il').forE
 let skipPop=false,dirty=false;
 /* Si hay cambios sin guardar, pregunta antes de cerrar un formulario */
 function tryClose(fromPop){if(!$('#layer').hidden&&dirty){if(fromPop){try{history.pushState({f:1},'')}catch(e){}}sheet(`<h3>¿Descartar lo que escribiste?</h3><p>Si salís ahora, se pierden los cambios sin guardar.</p><div class="acts"><button class="btn ghost" data-a="close">Seguir editando</button><button class="btn dng" data-a="discard">Descartar</button></div>`,1);return}closeForm(fromPop?1:0)}
-function closeForm(p){dirty=false;$('#layer').hidden=true;$('#layer').innerHTML='';document.body.style.overflow='';if(!p){try{if(history.state&&history.state.f){skipPop=true;history.back()}}catch(e){}}}
+function closeForm(p){dirty=false;document.body.classList.remove('kb');$('#layer').hidden=true;$('#layer').innerHTML='';document.body.style.overflow='';if(!p){try{if(history.state&&history.state.f){skipPop=true;history.back()}}catch(e){}}}
 
 function submitForm(f){if(busy)return;const fd=new FormData(f),d=Object.fromEntries(fd),o=f.dataset.type==='out',id=f.dataset.id;
   const a=parseMoney(d.amount);let bad=false;$('#ea').textContent='';$('#ef').textContent='';
@@ -277,7 +277,7 @@ document.addEventListener('click',e=>{if(e.target.closest('#layer [data-a="stk"]
 /* Con el teclado abierto se oculta el menú de abajo y el campo queda centrado, con su botón Guardar a la vista */
 const typing=()=>{const a=document.activeElement||{};return /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.type!=='date'};
 /* El botón de agregar producto no le quita el foco al campo, así el teclado no se cierra */
-document.addEventListener('mousedown',e=>{if(e.target.closest('[data-a="addp"]'))e.preventDefault()});
+document.addEventListener('mousedown',e=>{if(e.target.closest('#layer button,#shade button,form .btn,.acts .btn'))e.preventDefault()});
 function kbFix(){try{const a=document.activeElement,sc=a&&a.closest('.fx');if(!sc)return;const v=window.visualViewport,vb=v?v.offsetTop+v.height:innerHeight,t=a.closest('#xp')||a.id==='fd'?$('#ap'):a.closest('#il')?$('#al'):a,o=(t||a).getBoundingClientRect().bottom-(vb-24);if(o>0)sc.scrollTop+=o}catch(e){}}
 if(window.visualViewport)visualViewport.addEventListener('resize',()=>{if(typing())kbFix()});
 function kb(){document.body.classList.toggle('kb',typing());if(typing())setTimeout(()=>{try{if(document.activeElement.closest('.fx')){kbFix();setTimeout(kbFix,350);return}const a=document.activeElement,f=a.closest('form')||a,h=window.visualViewport?visualViewport.height:innerHeight;(f.offsetHeight<h-130?f:a).scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}},300)}
